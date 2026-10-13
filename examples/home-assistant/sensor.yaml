@@ -1,0 +1,30 @@
+# Home Assistant: añadir a configuration.yaml (o a un paquete) y reiniciar.
+# Cambia tariff=2.0TD por 3.0TD o 6.1TD si es tu caso.
+# scan_interval de 15 min: la API permite 1 petición cada 10 s por IP.
+
+sensor:
+  - platform: rest
+    name: Precio luz indexada
+    unique_id: precio_luz_indexada_compra
+    resource: https://tarifaelectrica.v2charge.com/v1/prices/now?tariff=2.0TD
+    headers:
+      X-API-Key: home-assistant
+    value_template: "{{ value_json.compra_eur_kwh }}"
+    unit_of_measurement: "EUR/kWh"
+    device_class: monetary
+    json_attributes:
+      - period
+      - venta_eur_kwh
+      - provisional
+    scan_interval: 900
+
+template:
+  - sensor:
+      - name: Precio venta excedentes
+        unique_id: precio_luz_indexada_venta
+        unit_of_measurement: "EUR/kWh"
+        device_class: monetary
+        state: "{{ state_attr('sensor.precio_luz_indexada', 'venta_eur_kwh') }}"
+      - name: Periodo tarifario
+        unique_id: periodo_tarifario_luz
+        state: "{{ state_attr('sensor.precio_luz_indexada', 'period') }}"
