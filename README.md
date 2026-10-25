@@ -16,6 +16,8 @@ venta de excedentes de autoconsumo. Con **API REST pública y gratuita**, sin re
 ## Qué ofrece
 
 - **Precio de hoy y de mañana**, hora a hora, para 2.0TD, 3.0TD y 6.1TD (Península).
+- **Precio de ahora** destacado en la web, con las próximas horas y la más barata de las siguientes 12 h;
+  en el móvil, vista de lista hora a hora.
 - **Compra y venta**: precio de la energía consumida y valor de los excedentes vertidos.
 - **Periodo tarifario** de cada hora (P1…P6), con fines de semana y festivos nacionales.
 - **Horas más baratas** y mejor franja para programar cargas: coche eléctrico, batería, bomba de calor.
@@ -64,6 +66,8 @@ Respuesta de una hora:
   "venta_eur_kwh": 0.289803,
   "provisional": false,
   "pmd_eur_mwh": 293.39,
+  "ajustes_eur_mwh": 42.59,
+  "perdidas_pct": 15.62,
   "components_eur_kwh": { "energia": 0.37451, "peaje": 0.033261, "cargo": 0.064292 }
 }
 ```
@@ -77,11 +81,14 @@ Respuesta de una hora:
 | GET | `/v1/prices/now?tariff=…` | Precio de la hora en curso |
 | GET | `/v1/prices/cheapest?tariff=…&n=4&block=3` | Horas más baratas y mejor franja contigua |
 | POST | `/v1/simulate` | Factura estimada con consumo horario y excedentes |
-| GET | `/v1/status` | Qué días tienen precios publicados y si son definitivos |
+| GET | `/v1/status` | Qué días tienen precios, ajustes y coeficiente de pérdidas publicados |
 | GET | `/v1/periods?tariff=…&on=…` | Periodo tarifario de cada hora |
 | GET | `/v1/regulated?tariff=…` | Peajes y cargos vigentes |
 
 `tariff`: `2.0TD`, `3.0TD` o `6.1TD`.
+
+`product` (opcional): `indexada` (por defecto: servicios de ajuste repercutidos en 2.0TD) o
+`indexada_con_ajustes` (coste completo: también en 3.0TD y 6.1TD).
 
 ### Rutas por fecha (compatibles con flujos Node-RED existentes)
 
@@ -110,13 +117,18 @@ Campos: `costeConsumo`, `costePeaje`, `pagoVertido`, `perdidas`, `periodo`, `fec
 ## Cómo se calcula
 
 ```
-compra = k_periodo × mercado + w × ajustes + peaje + cargo
-venta  = mercado − descuento
+pérdidas = coeficiente oficial del periodo × K horario
+compra   = mercado × (1 + pérdidas) + w × ajustes + peaje + cargo
+venta    = mercado − descuento
 ```
 
 - **mercado**: precio del mercado diario de OMIE (España), media horaria de los cuartos de hora.
+- **pérdidas**: coeficiente de pérdidas de cada tarifa y periodo fijado por la CNMC (Circular 3/2020,
+  art. 11) multiplicado por el coeficiente K horario de ajuste de pérdidas que publica Red Eléctrica. Cada hora
+  lo devuelve en `perdidas_pct`.
 - **ajustes**: servicios de ajuste y otros costes del sistema publicados por Red Eléctrica (ESIOS).
-- **k, w, descuento**: pérdidas de red y margen de comercialización de una oferta indexada típica.
+  `w` es el peso con que los repercute el producto.
+- **descuento**: diferencia aplicada al precio de los excedentes en 2.0TD.
 - **peaje y cargo**: valores regulados (CNMC y Ministerio para la Transición Ecológica) por periodo.
 
 Fuentes: OMIE, Red Eléctrica (ESIOS), CNMC, MITECO.
