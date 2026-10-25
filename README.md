@@ -1,8 +1,8 @@
 # Tarifas indexadas · Precio de la luz hora a hora en España y Portugal
 
 **[tarifaelectrica.v2charge.com](https://tarifaelectrica.v2charge.com)** — precio horario de la luz con
-tarifa indexada en **España** (2.0TD, 3.0TD y 6.1TD) y en **Portugal** (simples, bi-horária y tri-horária),
-hoy y mañana. Precio de compra y de venta de excedentes de autoconsumo. Con **API REST pública y gratuita**,
+tarifa indexada en **España** (2.0TD, 3.0TD y 6.1TD) y en **Portugal** (simples, bi-horária, tri-horária, BTE
+y media tensión), hoy y mañana. Precio de compra y de venta de excedentes de autoconsumo. Con **API REST pública y gratuita**,
 sin registro. Web en español y en portugués (según el idioma del navegador).
 
 [![Web de precios de la luz indexada](docs/web.png)](https://tarifaelectrica.v2charge.com)
@@ -18,7 +18,8 @@ sin registro. Web en español y en portugués (según el idioma del navegador).
 ## Qué ofrece
 
 - **Precio de hoy y de mañana**, hora a hora, para 2.0TD, 3.0TD y 6.1TD (Península) y para Portugal
-  continental (BTN: simples, bi-horária y tri-horária, ciclo diário y semanal).
+  continental (BTN simples, bi-horária y tri-horária; BTN > 20,7 kVA; BTE y MT tetra-horárias; ciclo diário y
+  semanal).
 - **Precio de ahora** destacado en la web, con las próximas horas y la más barata de las siguientes 12 h;
   en el móvil, vista de lista hora a hora.
 - **Compra y venta**: precio de la energía consumida y valor de los excedentes vertidos.
@@ -88,8 +89,19 @@ Respuesta de una hora:
 | GET | `/v1/periods?tariff=…&on=…` | Periodo tarifario de cada hora |
 | GET | `/v1/regulated?tariff=…` | Peajes y cargos vigentes |
 
-`tariff`: España `2.0TD`, `3.0TD` o `6.1TD` · Portugal `PT-SIMPLES`, `PT-BI`, `PT-TRI`, `PT-BI-SEMANAL` o
-`PT-TRI-SEMANAL` (horas de Lisboa; precios con la Tarifa de Acesso às Redes, sin IVA).
+`tariff`: España `2.0TD`, `3.0TD` o `6.1TD` · Portugal (horas de Lisboa; precios con la Tarifa de Acesso às
+Redes, sin IVA):
+
+| Portugal | Suministro | Periodos |
+|---|---|---|
+| `PT-SIMPLES` | BTN ≤ 20,7 kVA | Simples |
+| `PT-BI`, `PT-BI-SEMANAL` | BTN ≤ 20,7 kVA | Vazio, Fora de vazio |
+| `PT-TRI`, `PT-TRI-SEMANAL` | BTN ≤ 20,7 kVA | Ponta, Cheias, Vazio |
+| `PT-TRI-41`, `PT-TRI-41-SEMANAL` | BTN 27,6–41,4 kVA | Ponta, Cheias, Vazio |
+| `PT-BTE`, `PT-BTE-SEMANAL` | Baja tensión especial | Ponta, Cheias, Vazio normal, Super vazio |
+| `PT-MT` | Media tensión (ciclo semanal, festivos como domingo) | Ponta, Cheias, Vazio normal, Super vazio |
+
+Sin sufijo = ciclo diario; `-SEMANAL` = ciclo semanal.
 
 `product` (opcional): `indexada` (por defecto) o `indexada_con_ajustes` (incluye también los costes de ajuste
 del sistema en 3.0TD y 6.1TD).
@@ -120,6 +132,9 @@ Campos: `costeConsumo`, `costePeaje`, `pagoVertido`, `perdidas`, `periodo`, `fec
 
 ## Novedades
 
+- **25-oct-2026** · **Portugal, más potencia**: BTN de 27,6 a 41,4 kVA (`PT-TRI-41`), BTE (`PT-BTE`) y media
+  tensión (`PT-MT`), con sus periodos tetra-horários y festivos nacionales. BTE y MT están en la web portuguesa
+  y se marcan como estimación hasta contrastarlos con precios de una comercializadora.
 - **25-oct-2026** · **Portugal**: precios de hoy y mañana para BTN (simples, bi-horária y tri-horária, ciclo
   diario y semanal) en la API y en la web, que ahora está también en portugués y elige idioma según el navegador.
 
@@ -132,7 +147,7 @@ Campos: `costeConsumo`, `costePeaje`, `pagoVertido`, `perdidas`, `periodo`, `fec
 ## Fuentes
 
 Datos oficiales de OMIE, Red Eléctrica (ESIOS), CNMC y el Ministerio para la Transición Ecológica; para
-Portugal, OMIE y ERSE.
+Portugal, OMIE, ERSE y E-REDES.
 
 ## Aviso
 
