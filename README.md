@@ -81,14 +81,14 @@ Respuesta de una hora:
 | GET | `/v1/prices/now?tariff=…` | Precio de la hora en curso |
 | GET | `/v1/prices/cheapest?tariff=…&n=4&block=3` | Horas más baratas y mejor franja contigua |
 | POST | `/v1/simulate` | Factura estimada con consumo horario y excedentes |
-| GET | `/v1/status` | Qué días tienen precios, ajustes y coeficiente de pérdidas publicados |
+| GET | `/v1/status` | Qué días tienen precios publicados y si son definitivos |
 | GET | `/v1/periods?tariff=…&on=…` | Periodo tarifario de cada hora |
 | GET | `/v1/regulated?tariff=…` | Peajes y cargos vigentes |
 
 `tariff`: `2.0TD`, `3.0TD` o `6.1TD`.
 
-`product` (opcional): `indexada` (por defecto: servicios de ajuste repercutidos en 2.0TD) o
-`indexada_con_ajustes` (coste completo: también en 3.0TD y 6.1TD).
+`product` (opcional): `indexada` (por defecto) o `indexada_con_ajustes` (incluye también los costes de ajuste
+del sistema en 3.0TD y 6.1TD).
 
 ### Rutas por fecha (compatibles con flujos Node-RED existentes)
 
@@ -114,24 +114,17 @@ Campos: `costeConsumo`, `costePeaje`, `pagoVertido`, `perdidas`, `periodo`, `fec
 | Home Assistant | [examples/home-assistant/sensor.yaml](examples/home-assistant/sensor.yaml) |
 | Node-RED | [examples/node-red/flow.json](examples/node-red/flow.json) |
 
-## Cómo se calcula
+## Novedades
 
-```
-pérdidas = coeficiente oficial del periodo × K horario
-compra   = mercado × (1 + pérdidas) + w × ajustes + peaje + cargo
-venta    = mercado − descuento
-```
+- **25-oct-2026** · Precio todavía más ajustado en las tres tarifas, también para los periodos de invierno.
+  Nuevo campo `perdidas_pct` en cada hora y nuevo producto `indexada_con_ajustes`.
+- **25-oct-2026** · Límite ampliado a 30 peticiones por minuto por IP.
+- **25-oct-2026** · Web: precio de ahora destacado, próximas horas y vista de lista en el móvil.
+- **13-oct-2026** · Lanzamiento: precios de hoy y mañana para 2.0TD, 3.0TD y 6.1TD, API pública y rutas por fecha.
 
-- **mercado**: precio del mercado diario de OMIE (España), media horaria de los cuartos de hora.
-- **pérdidas**: coeficiente de pérdidas de cada tarifa y periodo fijado por la CNMC (Circular 3/2020,
-  art. 11) multiplicado por el coeficiente K horario de ajuste de pérdidas que publica Red Eléctrica. Cada hora
-  lo devuelve en `perdidas_pct`.
-- **ajustes**: servicios de ajuste y otros costes del sistema publicados por Red Eléctrica (ESIOS).
-  `w` es el peso con que los repercute el producto.
-- **descuento**: diferencia aplicada al precio de los excedentes en 2.0TD.
-- **peaje y cargo**: valores regulados (CNMC y Ministerio para la Transición Ecológica) por periodo.
+## Fuentes
 
-Fuentes: OMIE, Red Eléctrica (ESIOS), CNMC, MITECO.
+Datos oficiales de OMIE, Red Eléctrica (ESIOS), CNMC y el Ministerio para la Transición Ecológica.
 
 ## Aviso
 
