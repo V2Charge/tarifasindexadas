@@ -13,7 +13,7 @@ HEADERS = {"X-API-Key": "ejemplo-python"}  # identificador libre de tu integraci
 
 
 def get(path: str, **params) -> dict:
-    """GET con un reintento si se supera el límite (1 petición cada 10 s)."""
+    """GET con un reintento si se supera el límite (30 peticiones por minuto)."""
     r = requests.get(BASE + path, params=params, headers=HEADERS, timeout=20)
     if r.status_code == 429:
         time.sleep(int(r.headers.get("Retry-After", 10)))

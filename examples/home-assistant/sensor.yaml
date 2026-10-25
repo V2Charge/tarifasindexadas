@@ -1,6 +1,6 @@
 # Home Assistant: añadir a configuration.yaml (o a un paquete) y reiniciar.
 # Cambia tariff=2.0TD por 3.0TD o 6.1TD si es tu caso.
-# scan_interval de 15 min: la API permite 1 petición cada 10 s por IP.
+# scan_interval de 15 min: la API permite 30 peticiones por minuto por IP.
 
 sensor:
   - platform: rest

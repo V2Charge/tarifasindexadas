@@ -37,7 +37,7 @@ día a partir de las 21:00** deja todas las tarifas cerradas para mañana.
 ## Uso de la API
 
 - Sin autenticación. Respuestas JSON. Precios en **€/kWh sin impuestos**, horas en hora peninsular.
-- **Límite: 1 petición cada 10 segundos por IP.** Si se supera, `429` con cabecera `Retry-After`.
+- **Límite: 30 peticiones por minuto por IP.** Si se supera, `429` con cabecera `Retry-After` (segundos de espera).
 - Los precios cambian como mucho una vez al día: guarda la respuesta y reutilízala.
 - Opcional: identifica tu integración con la cabecera `X-API-Key: <tu-identificador>` (no es secreta).
 
