@@ -1,8 +1,9 @@
-# Tarifas indexadas · Precio de la luz hora a hora en España
+# Tarifas indexadas · Precio de la luz hora a hora en España y Portugal
 
 **[tarifaelectrica.v2charge.com](https://tarifaelectrica.v2charge.com)** — precio horario de la luz con
-tarifa indexada para las tarifas de acceso **2.0TD, 3.0TD y 6.1TD**, hoy y mañana. Precio de compra y de
-venta de excedentes de autoconsumo. Con **API REST pública y gratuita**, sin registro.
+tarifa indexada en **España** (2.0TD, 3.0TD y 6.1TD) y en **Portugal** (simples, bi-horária y tri-horária),
+hoy y mañana. Precio de compra y de venta de excedentes de autoconsumo. Con **API REST pública y gratuita**,
+sin registro. Web en español y en portugués (según el idioma del navegador).
 
 [![Web de precios de la luz indexada](docs/web.png)](https://tarifaelectrica.v2charge.com)
 
@@ -10,12 +11,14 @@ venta de excedentes de autoconsumo. Con **API REST pública y gratuita**, sin re
 |---|---|
 | Web | https://tarifaelectrica.v2charge.com |
 | Precio de mañana | https://tarifaelectrica.v2charge.com/precio-luz-manana |
+| Portugal (português) | https://tarifaelectrica.v2charge.com/pt/ |
 | API | `https://tarifaelectrica.v2charge.com/v1/…` |
 | Guía para asistentes de IA | https://tarifaelectrica.v2charge.com/llms.txt |
 
 ## Qué ofrece
 
-- **Precio de hoy y de mañana**, hora a hora, para 2.0TD, 3.0TD y 6.1TD (Península).
+- **Precio de hoy y de mañana**, hora a hora, para 2.0TD, 3.0TD y 6.1TD (Península) y para Portugal
+  continental (BTN: simples, bi-horária y tri-horária, ciclo diário y semanal).
 - **Precio de ahora** destacado en la web, con las próximas horas y la más barata de las siguientes 12 h;
   en el móvil, vista de lista hora a hora.
 - **Compra y venta**: precio de la energía consumida y valor de los excedentes vertidos.
@@ -85,7 +88,8 @@ Respuesta de una hora:
 | GET | `/v1/periods?tariff=…&on=…` | Periodo tarifario de cada hora |
 | GET | `/v1/regulated?tariff=…` | Peajes y cargos vigentes |
 
-`tariff`: `2.0TD`, `3.0TD` o `6.1TD`.
+`tariff`: España `2.0TD`, `3.0TD` o `6.1TD` · Portugal `PT-SIMPLES`, `PT-BI`, `PT-TRI`, `PT-BI-SEMANAL` o
+`PT-TRI-SEMANAL` (horas de Lisboa; precios con la Tarifa de Acesso às Redes, sin IVA).
 
 `product` (opcional): `indexada` (por defecto) o `indexada_con_ajustes` (incluye también los costes de ajuste
 del sistema en 3.0TD y 6.1TD).
@@ -116,6 +120,9 @@ Campos: `costeConsumo`, `costePeaje`, `pagoVertido`, `perdidas`, `periodo`, `fec
 
 ## Novedades
 
+- **25-oct-2026** · **Portugal**: precios de hoy y mañana para BTN (simples, bi-horária y tri-horária, ciclo
+  diario y semanal) en la API y en la web, que ahora está también en portugués y elige idioma según el navegador.
+
 - **25-oct-2026** · Precio todavía más ajustado en las tres tarifas, también para los periodos de invierno.
   Nuevo campo `perdidas_pct` en cada hora y nuevo producto `indexada_con_ajustes`.
 - **25-oct-2026** · Límite ampliado a 30 peticiones por minuto por IP.
@@ -124,7 +131,8 @@ Campos: `costeConsumo`, `costePeaje`, `pagoVertido`, `perdidas`, `periodo`, `fec
 
 ## Fuentes
 
-Datos oficiales de OMIE, Red Eléctrica (ESIOS), CNMC y el Ministerio para la Transición Ecológica.
+Datos oficiales de OMIE, Red Eléctrica (ESIOS), CNMC y el Ministerio para la Transición Ecológica; para
+Portugal, OMIE y ERSE.
 
 ## Aviso
 
