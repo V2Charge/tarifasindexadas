@@ -1,9 +1,10 @@
-# Tarifas indexadas · Precio de la luz hora a hora en España y Portugal
+# Tarifas indexadas · Precio de la luz hora a hora en España, Portugal y Países Bajos
 
 **[tarifaelectrica.v2charge.com](https://tarifaelectrica.v2charge.com)** — precio horario de la luz con
 tarifa indexada en **España** (2.0TD, 3.0TD y 6.1TD) y en **Portugal** (simples, bi-horária, tri-horária, BTE
-y media tensión), hoy y mañana. Precio de compra y de venta de excedentes de autoconsumo. Con **API REST pública y gratuita**,
-sin registro. Web en español y en portugués (según el idioma del navegador).
+y media tensión) y en **Países Bajos** (contrato dinámico), hoy y mañana. Precio de compra y de venta de excedentes
+de autoconsumo. Con **API REST pública y gratuita**, sin registro. Web en español, portugués y neerlandés (según el
+idioma del navegador).
 
 [![Web de precios de la luz indexada](docs/web.png)](https://tarifaelectrica.v2charge.com)
 
@@ -12,6 +13,7 @@ sin registro. Web en español y en portugués (según el idioma del navegador).
 | Web | https://tarifaelectrica.v2charge.com |
 | Precio de mañana | https://tarifaelectrica.v2charge.com/precio-luz-manana |
 | Portugal (português) | https://tarifaelectrica.v2charge.com/pt/ |
+| Países Bajos (Nederlands) | https://tarifaelectrica.v2charge.com/nl/ |
 | API | `https://tarifaelectrica.v2charge.com/v1/…` |
 | Guía para asistentes de IA | https://tarifaelectrica.v2charge.com/llms.txt |
 
@@ -19,7 +21,7 @@ sin registro. Web en español y en portugués (según el idioma del navegador).
 
 - **Precio de hoy y de mañana**, hora a hora, para 2.0TD, 3.0TD y 6.1TD (Península) y para Portugal
   continental (BTN simples, bi-horária y tri-horária; BTN > 20,7 kVA; BTE y MT tetra-horárias; ciclo diário y
-  semanal).
+  semanal) y para Países Bajos (contrato dinámico, con y sin energiebelasting y btw).
 - **Precio de ahora** destacado en la web, con las próximas horas y la más barata de las siguientes 12 h;
   en el móvil, vista de lista hora a hora.
 - **Compra y venta**: precio de la energía consumida y valor de los excedentes vertidos.
@@ -103,6 +105,10 @@ Redes, sin IVA):
 
 Sin sufijo = ciclo diario; `-SEMANAL` = ciclo semanal.
 
+Países Bajos: `tariff=NL` (contrato dinámico, hora de Ámsterdam, sin periodos). Cada hora incluye además
+`compra_con_impuestos_eur_kwh`, con energiebelasting y btw, el precio que publican las comercializadoras
+dinámicas. No incluye costes fijos (netbeheer, vastrecht).
+
 `product` (opcional): `indexada` (por defecto) o `indexada_con_ajustes` (incluye también los costes de ajuste
 del sistema en 3.0TD y 6.1TD).
 
@@ -132,6 +138,8 @@ Campos: `costeConsumo`, `costePeaje`, `pagoVertido`, `perdidas`, `periodo`, `fec
 
 ## Novedades
 
+- **26-oct-2026** · **Países Bajos**: precio por hora del contrato dinámico (`tariff=NL`), sin impuestos y con
+  energiebelasting y btw, para hoy y mañana. Web en neerlandés en `/nl/`.
 - **25-oct-2026** · **Portugal, más potencia**: BTN de 27,6 a 41,4 kVA (`PT-TRI-41`), BTE (`PT-BTE`) y media
   tensión (`PT-MT`), con sus periodos tetra-horários y festivos nacionales. BTE y MT están en la web portuguesa
   y se marcan como estimación hasta contrastarlos con precios de una comercializadora.
@@ -147,7 +155,8 @@ Campos: `costeConsumo`, `costePeaje`, `pagoVertido`, `perdidas`, `periodo`, `fec
 ## Fuentes
 
 Datos oficiales de OMIE, Red Eléctrica (ESIOS), CNMC y el Ministerio para la Transición Ecológica; para
-Portugal, OMIE, ERSE y E-REDES.
+Portugal, OMIE, ERSE y E-REDES; para Países Bajos, ENTSO-E Transparency Platform (con EnergyZero como respaldo)
+y Belastingdienst.
 
 ## Aviso
 
