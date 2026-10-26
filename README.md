@@ -105,9 +105,37 @@ Redes, sin IVA):
 
 Sin sufijo = ciclo diario; `-SEMANAL` = ciclo semanal.
 
-Países Bajos: `tariff=NL` (contrato dinámico, hora de Ámsterdam, sin periodos). Cada hora incluye además
-`compra_con_impuestos_eur_kwh`, con energiebelasting y btw, el precio que publican las comercializadoras
-dinámicas. No incluye costes fijos (netbeheer, vastrecht).
+Países Bajos: contrato dinámico (hora de Ámsterdam, sin periodos) por tramo de consumo anual: `NL` (hasta
+10.000 kWh/año), `NL-SCHIJF3` (10–50 MWh), `NL-SCHIJF4` (50 MWh – 10 GWh) y `NL-SCHIJF5` (más de 10 GWh). Cada
+hora incluye además `compra_con_impuestos_eur_kwh`, con energiebelasting y btw, el precio que publican las
+comercializadoras dinámicas para hogares. No incluye costes fijos (netbeheer, vastrecht).
+
+Todos los precios principales (`compra_eur_kwh`) van sin impuestos.
+
+### Nombres de las tarifas
+
+`GET /v1/tariffs` devuelve en `catalog` el país y el nombre de cada tarifa para mostrarlo en una app, con el
+formato "País · tarifa (para quién)", en el idioma del país (`name`) y en español (`name_es`).
+
+| `tariff` | Nombre en la app (idioma del país) | Nombre en español |
+|---|---|---|
+| `2.0TD` | España · 2.0TD (hasta 15 kW) | España · 2.0TD (hasta 15 kW) |
+| `3.0TD` | España · 3.0TD (más de 15 kW) | España · 3.0TD (más de 15 kW) |
+| `6.1TD` | España · 6.1TD (alta tensión) | España · 6.1TD (alta tensión) |
+| `PT-SIMPLES` | Portugal · Simples | Portugal · Simple |
+| `PT-BI` | Portugal · Bi-horária (ciclo diário) | Portugal · Bihoraria (ciclo diario) |
+| `PT-BI-SEMANAL` | Portugal · Bi-horária (ciclo semanal) | Portugal · Bihoraria (ciclo semanal) |
+| `PT-TRI` | Portugal · Tri-horária (ciclo diário) | Portugal · Trihoraria (ciclo diario) |
+| `PT-TRI-SEMANAL` | Portugal · Tri-horária (ciclo semanal) | Portugal · Trihoraria (ciclo semanal) |
+| `PT-TRI-41` | Portugal · Tri-horária > 20,7 kVA (ciclo diário) | Portugal · Trihoraria > 20,7 kVA (ciclo diario) |
+| `PT-TRI-41-SEMANAL` | Portugal · Tri-horária > 20,7 kVA (ciclo semanal) | Portugal · Trihoraria > 20,7 kVA (ciclo semanal) |
+| `PT-BTE` | Portugal · BTE (ciclo diário) | Portugal · BTE (ciclo diario) |
+| `PT-BTE-SEMANAL` | Portugal · BTE (ciclo semanal) | Portugal · BTE (ciclo semanal) |
+| `PT-MT` | Portugal · Média tensão | Portugal · Media tensión |
+| `NL` | Nederland · Dynamisch (tot 10.000 kWh/jaar) | Países Bajos · Dinámica (hasta 10.000 kWh/año) |
+| `NL-SCHIJF3` | Nederland · Dynamisch zakelijk (10–50 MWh/jaar) | Países Bajos · Dinámica empresas (10–50 MWh/año) |
+| `NL-SCHIJF4` | Nederland · Dynamisch zakelijk (50 MWh – 10 GWh/jaar) | Países Bajos · Dinámica empresas (50 MWh – 10 GWh/año) |
+| `NL-SCHIJF5` | Nederland · Dynamisch grootverbruik (> 10 GWh/jaar) | Países Bajos · Dinámica gran consumo (> 10 GWh/año) |
 
 `product` (opcional): `indexada` (por defecto) o `indexada_con_ajustes` (incluye también los costes de ajuste
 del sistema en 3.0TD y 6.1TD).
@@ -138,6 +166,8 @@ Campos: `costeConsumo`, `costePeaje`, `pagoVertido`, `perdidas`, `periodo`, `fec
 
 ## Novedades
 
+- **26-oct-2026** · **Países Bajos para empresas**: tarifas por tramo de consumo anual (`NL-SCHIJF3`,
+  `NL-SCHIJF4`, `NL-SCHIJF5`). Nuevo `catalog` en `/v1/tariffs` con el nombre de cada tarifa para apps.
 - **26-oct-2026** · **Países Bajos**: precio por hora del contrato dinámico (`tariff=NL`), sin impuestos y con
   energiebelasting y btw, para hoy y mañana. Web en neerlandés en `/nl/`.
 - **25-oct-2026** · **Portugal, más potencia**: BTN de 27,6 a 41,4 kVA (`PT-TRI-41`), BTE (`PT-BTE`) y media
