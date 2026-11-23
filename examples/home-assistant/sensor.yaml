@@ -6,7 +6,7 @@ sensor:
   - platform: rest
     name: Precio luz indexada
     unique_id: precio_luz_indexada_compra
-    resource: https://tarifaelectrica.v2charge.com/v1/prices/now?tariff=2.0TD
+    resource: https://electricityprices.v2charge.com/v1/prices/now?tariff=2.0TD
     headers:
       X-API-Key: home-assistant
     value_template: "{{ value_json.compra_eur_kwh }}"

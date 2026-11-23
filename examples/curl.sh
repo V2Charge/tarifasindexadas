@@ -1,6 +1,6 @@
 #!/usr/bin/env sh
 # Ejemplos de la API de tarifas indexadas. Límite: 30 peticiones por minuto por IP.
-BASE="https://tarifaelectrica.v2charge.com"
+BASE="https://electricityprices.v2charge.com"
 
 # ¿Están publicados los precios de mañana? ¿Son definitivos?
 curl -s "$BASE/v1/status"

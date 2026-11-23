@@ -1,6 +1,6 @@
 // Mejor franja para cargar mañana (o hoy si mañana aún no está publicado).
 // Node 18+:  node precios.mjs 2.0TD 3
-const BASE = "https://tarifaelectrica.v2charge.com";
+const BASE = "https://electricityprices.v2charge.com";
 const tariff = process.argv[2] ?? "2.0TD";
 const hours = Number(process.argv[3] ?? 3);
 

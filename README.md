@@ -1,22 +1,30 @@
 # Tarifas indexadas · Precio de la luz hora a hora en España, Portugal, Países Bajos y más países de Europa
 
-**[tarifaelectrica.v2charge.com](https://tarifaelectrica.v2charge.com)** — precio horario de la luz con
+**[electricityprices.v2charge.com](https://electricityprices.v2charge.com)** — precio horario de la luz con
 tarifa indexada en **España** (2.0TD, 3.0TD y 6.1TD) y en **Portugal** (simples, bi-horária, tri-horária, BTE
 y media tensión), **Países Bajos** (contrato dinámico), **Dinamarca**, **Estonia**, **Letonia**, **Lituania** y
 **Austria**, hoy y mañana. Precio de compra y de venta de excedentes
-de autoconsumo. Con **API REST pública y gratuita**, sin registro. Web en español, portugués y neerlandés (según el
-idioma del navegador).
+de autoconsumo. Con **API REST pública y gratuita**, sin registro. Una web por país en su idioma (la portada elige
+según el idioma del navegador).
 
-[![Web de precios de la luz indexada](docs/web.png)](https://tarifaelectrica.v2charge.com)
+> **Nuevo dominio (23-nov-2026):** `tarifaelectrica.v2charge.com` pasa a ser `electricityprices.v2charge.com`. Las
+> integraciones que usan el dominio anterior **siguen funcionando sin cambios**: la API responde igual en los dos y
+> la web redirige al nuevo. Recomendamos actualizar la URL cuando te venga bien.
+
+[![Web de precios de la luz indexada](docs/web.png)](https://electricityprices.v2charge.com)
 
 | | |
 |---|---|
-| Web | https://tarifaelectrica.v2charge.com |
-| Precio de mañana | https://tarifaelectrica.v2charge.com/precio-luz-manana |
-| Portugal (português) | https://tarifaelectrica.v2charge.com/pt/ |
-| Países Bajos (Nederlands) | https://tarifaelectrica.v2charge.com/nl/ |
-| API | `https://tarifaelectrica.v2charge.com/v1/…` |
-| Guía para asistentes de IA | https://tarifaelectrica.v2charge.com/llms.txt |
+| España | https://electricityprices.v2charge.com/ · mañana: https://electricityprices.v2charge.com/precio-luz-manana |
+| Portugal (português) | https://electricityprices.v2charge.com/pt/ |
+| Países Bajos (Nederlands) | https://electricityprices.v2charge.com/nl/ |
+| Dinamarca (dansk) | https://electricityprices.v2charge.com/dk/ |
+| Austria (Deutsch) | https://electricityprices.v2charge.com/at/ |
+| Estonia (eesti) | https://electricityprices.v2charge.com/ee/ |
+| Lituania (lietuvių) | https://electricityprices.v2charge.com/lt/ |
+| Letonia (latviešu) | https://electricityprices.v2charge.com/lv/ |
+| API | `https://electricityprices.v2charge.com/v1/…` (también en el dominio anterior) |
+| Guía para asistentes de IA | https://electricityprices.v2charge.com/llms.txt |
 
 ## Qué ofrece
 
@@ -55,13 +63,13 @@ día a partir de las 21:00** deja todas las tarifas cerradas para mañana.
 
 ```bash
 # Precio de la hora actual (2.0TD)
-curl "https://tarifaelectrica.v2charge.com/v1/prices/now?tariff=2.0TD"
+curl "https://electricityprices.v2charge.com/v1/prices/now?tariff=2.0TD"
 
 # Todo el día de mañana (3.0TD)
-curl "https://tarifaelectrica.v2charge.com/v1/prices/tomorrow?tariff=3.0TD"
+curl "https://electricityprices.v2charge.com/v1/prices/tomorrow?tariff=3.0TD"
 
 # Las 3 horas más baratas y la mejor franja de 3 horas
-curl "https://tarifaelectrica.v2charge.com/v1/prices/cheapest?tariff=2.0TD&n=3&block=3"
+curl "https://electricityprices.v2charge.com/v1/prices/cheapest?tariff=2.0TD&n=3&block=3"
 ```
 
 Respuesta de una hora:
@@ -226,6 +234,11 @@ Campos: `costeConsumo`, `costePeaje`, `pagoVertido`, `perdidas`, `periodo`, `fec
 | Node-RED | [examples/node-red/flow.json](examples/node-red/flow.json) |
 
 ## Novedades
+
+- **23-nov-2026** · **Nuevo dominio** `electricityprices.v2charge.com` (el anterior sigue funcionando para la API).
+  **Web para todos los países**, cada una en su idioma: Dinamarca (`/dk/`, con selector de distribuidora y precios
+  en øre/kWh), Austria (`/at/`, zona de red y Sommer-Niedertarif), Estonia (`/ee/`), Lituania (`/lt/`) y Letonia
+  (`/lv/`), además de España, Portugal y Países Bajos. Selector de país en la cabecera.
 
 - **26-oct-2026** · **Dinamarca, Estonia, Letonia, Lituania y Austria**: precio por hora con peajes y cargos de cada
   país (71 tarifas en total). En Dinamarca los peajes de cada distribuidor se actualizan solos cada día.

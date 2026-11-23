@@ -1,4 +1,4 @@
-"""Precios de la luz indexada con la API de tarifaelectrica.v2charge.com.
+"""Precios de la luz indexada con la API de electricityprices.v2charge.com.
 
 Requiere: pip install requests
 Uso: python precios.py [2.0TD|3.0TD|6.1TD]
@@ -8,7 +8,7 @@ import time
 
 import requests
 
-BASE = "https://tarifaelectrica.v2charge.com"
+BASE = "https://electricityprices.v2charge.com"
 HEADERS = {"X-API-Key": "ejemplo-python"}  # identificador libre de tu integración
 
 
