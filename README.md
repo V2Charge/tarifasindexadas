@@ -141,7 +141,9 @@ Finlandia (`FI-CARUNA-YLEIS`, `FI-ELENIA-YO`, `FI-HELEN-AIKA`…): siirtomaksu d
 Italia (`IT-DOMESTICO`): PUN Index GME horario + pérdidas, transporte, oneri ASOS/ARIM y accise; `period` es la
 fascia F1/F2/F3 y `venta_eur_kwh` el PUN. Fonte PUN: Gestore dei Mercati Energetici S.p.A.
 
-`GET /v1/countries` devuelve los países con su nombre, idioma, zona horaria, web y la lista de sus tarifas.
+`GET /v1/countries` devuelve los países con su nombre, idioma, zona horaria, web, la lista de sus tarifas y el
+nombre del producto en cada país (`product_name`: «Tarifa indexada», «Dynamisch energiecontract», «Pörssisähkö»,
+«Offre à tarification dynamique»…; `product_name_es` y la etiqueta corta `product_short`).
 
 Todos los precios principales (`compra_eur_kwh`) van sin impuestos.
 
