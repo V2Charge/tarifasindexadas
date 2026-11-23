@@ -1,9 +1,9 @@
-# Tarifas indexadas · Precio de la luz hora a hora en España, Portugal, Países Bajos y más países de Europa
+# Tarifas indexadas · Precio de la luz hora a hora en 11 países de Europa
 
 **[electricityprices.v2charge.com](https://electricityprices.v2charge.com)** — precio horario de la luz con
 tarifa indexada en **España** (2.0TD, 3.0TD y 6.1TD) y en **Portugal** (simples, bi-horária, tri-horária, BTE
-y media tensión), **Países Bajos** (contrato dinámico), **Dinamarca**, **Estonia**, **Letonia**, **Lituania** y
-**Austria**, hoy y mañana. Precio de compra y de venta de excedentes
+y media tensión), **Países Bajos** (contrato dinámico), **Dinamarca**, **Estonia**, **Letonia**, **Lituania**,
+**Austria**, **Francia** (offre dynamique), **Suecia** (SE1–SE4) y **Finlandia** (pörssisähkö), hoy y mañana. Precio de compra y de venta de excedentes
 de autoconsumo. Con **API REST pública y gratuita**, sin registro. Una web por país en su idioma (la portada elige
 según el idioma del navegador).
 
@@ -23,6 +23,10 @@ según el idioma del navegador).
 | Estonia (eesti) | https://electricityprices.v2charge.com/ee/ |
 | Lituania (lietuvių) | https://electricityprices.v2charge.com/lt/ |
 | Letonia (latviešu) | https://electricityprices.v2charge.com/lv/ |
+| Francia (français) | https://electricityprices.v2charge.com/fr/ |
+| Suecia (svenska) | https://electricityprices.v2charge.com/se/ |
+| Finlandia (suomi) | https://electricityprices.v2charge.com/fi/ |
+| Países disponibles (API) | `https://electricityprices.v2charge.com/v1/countries` |
 | API | `https://electricityprices.v2charge.com/v1/…` (también en el dominio anterior) |
 | Guía para asistentes de IA | https://electricityprices.v2charge.com/llms.txt |
 
@@ -31,7 +35,8 @@ según el idioma del navegador).
 - **Precio de hoy y de mañana**, hora a hora, para 2.0TD, 3.0TD y 6.1TD (Península) y para Portugal
   continental (BTN simples, bi-horária y tri-horária; BTN > 20,7 kVA; BTE y MT tetra-horárias; ciclo diário y
   semanal), Países Bajos (contrato dinámico, con y sin energiebelasting y btw), Dinamarca (12 distribuidores),
-  Estonia, Letonia, Lituania y Austria (14 zonas de red).
+  Estonia, Letonia, Lituania, Austria (14 zonas de red), Francia (TURPE en Base y Heures creuses), Suecia (13
+  combinaciones de zona y distribuidora) y Finlandia (16 tarifas de 6 distribuidoras).
 - **Precio de ahora** destacado en la web, con las próximas horas y la más barata de las siguientes 12 h;
   en el móvil, vista de lista hora a hora.
 - **Compra y venta**: precio de la energía consumida y valor de los excedentes vertidos.
@@ -100,6 +105,7 @@ Respuesta de una hora:
 | GET | `/v1/status` | Qué días tienen precios publicados y si son definitivos |
 | GET | `/v1/periods?tariff=…&on=…` | Periodo tarifario de cada hora |
 | GET | `/v1/regulated?tariff=…` | Peajes y cargos vigentes |
+| GET | `/v1/countries` | Países disponibles, con su web y sus tarifas |
 
 `tariff`: España `2.0TD`, `3.0TD` o `6.1TD` · Portugal (horas de Lisboa; precios con la Tarifa de Acesso às
 Redes, sin IVA):
@@ -124,6 +130,14 @@ Dinamarca (`DK-RADIUS`, `DK-CERIUS`, `DK-N1`… por distribuidor), Estonia (`EE-
 (`LV-PAMATA`, `LV-SPECIALAIS`), Lituania (`LT-STANDARTINIS-1/2/4`, `LT-EFEKTYVUS-1/2/4`, `LT-NAMAI-1/2`) y Austria
 (`AT-<ZONA>` y `AT-<ZONA>-SNAP` con la tarifa reducida de verano): mercado diario, peajes de red y cargos regulados
 por kWh de cada franja, en hora local. Sin cuotas fijas.
+
+Francia (`FR-CU4` cliente «Base», `FR-MU4` cliente «Heures creuses», `FR-LU`): parte de energía del TURPE 7 en 4
+franjas (horas punta/valle × invierno noviembre–marzo / verano) y accise; horas valle 22–6 h por defecto (Enedis
+las fija para cada contador). Suecia (`SE3-ELLEVIO`, `SE3-VATTENFALL-T4`, `SE4-EON-SYD-VILLA`…): zona SE1–SE4 +
+distribuidora, con överföringsavgift y energiskatt; peajes en coronas pasados a € con el cambio del BCE.
+Finlandia (`FI-CARUNA-YLEIS`, `FI-ELENIA-YO`, `FI-HELEN-AIKA`…): siirtomaksu de cada distribuidora y sähkövero.
+
+`GET /v1/countries` devuelve los países con su nombre, idioma, zona horaria, web y la lista de sus tarifas.
 
 Todos los precios principales (`compra_eur_kwh`) van sin impuestos.
 
@@ -205,6 +219,38 @@ formato "País · tarifa (para quién)", en el idioma del país (`name`) y en es
 | `LT-NAMAI-2` | Lietuva · ESO Namai (dvi laiko zonos) | Lituania · ESO Namai (dos franjas) |
 | `LV-PAMATA` | Latvija · Sadales tīkls Pamata-1 | Letonia · Sadales tīkls Pamata-1 |
 | `LV-SPECIALAIS` | Latvija · Sadales tīkls Speciālais-1 | Letonia · Sadales tīkls Especial-1 |
+| `FI-CARUNA-YLEIS` | Suomi · Caruna yleissiirto | Finlandia · Caruna general |
+| `FI-CARUNA-YO` | Suomi · Caruna yösiirto | Finlandia · Caruna día/noche |
+| `FI-CARUNA-KAUSI` | Suomi · Caruna kausisiirto | Finlandia · Caruna estacional |
+| `FI-CARUNAESPOO-YLEIS` | Suomi · Caruna Espoo yleissiirto | Finlandia · Caruna Espoo general |
+| `FI-CARUNAESPOO-YO` | Suomi · Caruna Espoo yösiirto | Finlandia · Caruna Espoo día/noche |
+| `FI-CARUNAESPOO-KAUSI` | Suomi · Caruna Espoo kausisiirto | Finlandia · Caruna Espoo estacional |
+| `FI-ELENIA-YLEIS` | Suomi · Elenia yleissiirto | Finlandia · Elenia general |
+| `FI-ELENIA-YO` | Suomi · Elenia yösiirto | Finlandia · Elenia día/noche |
+| `FI-ELENIA-KAUSI` | Suomi · Elenia vuodenaikasiirto | Finlandia · Elenia estacional |
+| `FI-HELEN-YLEIS` | Suomi · Helen yleissiirto | Finlandia · Helen general (Helsinki) |
+| `FI-HELEN-AIKA` | Suomi · Helen aikasiirto | Finlandia · Helen día/noche (Helsinki) |
+| `FI-JSE-YLEIS` | Suomi · Järvi-Suomen Energia yleissähkö | Finlandia · Järvi-Suomen Energia general |
+| `FI-JSE-YO` | Suomi · Järvi-Suomen Energia yösähkö | Finlandia · Järvi-Suomen Energia día/noche |
+| `FI-JSE-KAUSI` | Suomi · Järvi-Suomen Energia vuodenaikasähkö | Finlandia · Järvi-Suomen Energia estacional |
+| `FI-OULU-YLEIS` | Suomi · Oulun Energia yleissiirto | Finlandia · Oulun Energia general |
+| `FI-OULU-AIKA` | Suomi · Oulun Energia aikasiirto | Finlandia · Oulun Energia día/noche |
+| `FR-CU4` | France · Base (TURPE CU4) | Francia · Base (TURPE CU4) |
+| `FR-MU4` | France · Heures creuses (TURPE MU4) | Francia · Horas valle (TURPE MU4) |
+| `FR-LU` | France · Longue utilisation (TURPE LU) | Francia · Larga utilización (TURPE LU) |
+| `SE3-ELLEVIO` | Sverige · Ellevio (SE3) | Suecia · Ellevio (SE3) |
+| `SE3-VATTENFALL-E4` | Sverige · Vattenfall Enkeltariff (SE3) | Suecia · Vattenfall tarifa simple (SE3) |
+| `SE3-VATTENFALL-T4` | Sverige · Vattenfall Tidstariff (SE3) | Suecia · Vattenfall tarifa horaria (SE3) |
+| `SE1-VATTENFALL-E4` | Sverige · Vattenfall Enkeltariff (SE1) | Suecia · Vattenfall tarifa simple (SE1) |
+| `SE1-VATTENFALL-T4` | Sverige · Vattenfall Tidstariff (SE1) | Suecia · Vattenfall tarifa horaria (SE1) |
+| `SE4-EON-SYD-VILLA` | Sverige · E.ON Syd Villa 20-25 A (SE4) | Suecia · E.ON Sur vivienda 20-25 A (SE4) |
+| `SE4-EON-SYD-VILLA16` | Sverige · E.ON Syd Villa 16 A (SE4) | Suecia · E.ON Sur vivienda 16 A (SE4) |
+| `SE4-EON-SYD-LGH` | Sverige · E.ON Syd Lägenhet (SE4) | Suecia · E.ON Sur apartamento (SE4) |
+| `SE3-EON-SYD-VILLA` | Sverige · E.ON Syd Villa 20-25 A (SE3) | Suecia · E.ON Sur vivienda 20-25 A (SE3) |
+| `SE3-EON-STHLM-VILLA` | Sverige · E.ON Stockholm Villa 20-25 A (SE3) | Suecia · E.ON Estocolmo vivienda 20-25 A (SE3) |
+| `SE3-EON-STHLM-VILLA16` | Sverige · E.ON Stockholm Villa 16 A (SE3) | Suecia · E.ON Estocolmo vivienda 16 A (SE3) |
+| `SE3-EON-STHLM-LGH` | Sverige · E.ON Stockholm Lägenhet (SE3) | Suecia · E.ON Estocolmo apartamento (SE3) |
+| `SE2-EON-NORD-VILLA` | Sverige · E.ON Nord Villa 20-25 A (SE2) | Suecia · E.ON Norte vivienda 20-25 A (SE2) |
 
 `product` (opcional): `indexada` (por defecto) o `indexada_con_ajustes` (incluye también los costes de ajuste
 del sistema en 3.0TD y 6.1TD).
@@ -235,6 +281,10 @@ Campos: `costeConsumo`, `costePeaje`, `pagoVertido`, `perdidas`, `periodo`, `fec
 
 ## Novedades
 
+- **24-nov-2026** · **Francia, Suecia y Finlandia**: precios por hora con peajes e impuestos de cada país, en la
+  API y en la web (`/fr/`, `/se/`, `/fi/`, cada una en su idioma; Suecia en öre/kWh). Nuevo `GET /v1/countries`
+  para saber qué países hay y sus tarifas. 103 tarifas en 11 países.
+
 - **23-nov-2026** · **Nuevo dominio** `electricityprices.v2charge.com` (el anterior sigue funcionando para la API).
   **Web para todos los países**, cada una en su idioma: Dinamarca (`/dk/`, con selector de distribuidora y precios
   en øre/kWh), Austria (`/at/`, zona de red y Sommer-Niedertarif), Estonia (`/ee/`), Lituania (`/lt/`) y Letonia
@@ -263,7 +313,9 @@ Campos: `costeConsumo`, `costePeaje`, `pagoVertido`, `perdidas`, `periodo`, `fec
 Datos oficiales de OMIE, Red Eléctrica (ESIOS), CNMC y el Ministerio para la Transición Ecológica; para
 Portugal, OMIE, ERSE y E-REDES; para Países Bajos, ENTSO-E Transparency Platform (con EnergyZero como respaldo)
 y Belastingdienst; Dinamarca, Energinet (DataHub); Estonia, Elektrilevi y Elering; Letonia, Sadales tīkls y AST;
-Lituania, ESO y VERT; Austria, E-Control.
+Lituania, ESO y VERT; Austria, E-Control; Francia, CRE (TURPE 7) y ENTSO-E; Suecia, Skatteverket y las
+distribuidoras (Ellevio, Vattenfall Eldistribution, E.ON Energidistribution); Finlandia, Verohallinto y las
+distribuidoras (Caruna, Elenia, Helen Sähköverkko, Järvi-Suomen Energia, Oulun Energia).
 
 ## Aviso
 
