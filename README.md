@@ -108,7 +108,7 @@ Respuesta de una hora:
 | GET | `/v1/periods?tariff=…&on=…` | Periodo tarifario de cada hora |
 | GET | `/v1/regulated?tariff=…` | Peajes y cargos vigentes |
 | GET | `/v1/countries` | Países disponibles, con su web y sus tarifas |
-| GET | `/v1/prices/forecast?tariff=…&days=7` | Hoy y próximos días: oficial + **previsión** (España y Portugal) |
+| GET | `/v1/prices/forecast?tariff=…&days=7` | Hoy y próximos días: oficial + **previsión** (España, Portugal, Francia e Italia) |
 
 `tariff`: España `2.0TD`, `3.0TD` o `6.1TD` · Portugal (horas de Lisboa; precios con la Tarifa de Acesso às
 Redes, sin IVA):
