@@ -74,7 +74,7 @@ def main() -> None:
         sure = kwh * best[3] < today[0]  # incluso en el extremo alto de la previsión sale más barato
         print(f"→ Espera al {best[1]['date']} desde las {best[2]}: ahorro estimado {saving:.2f} € frente a hoy"
               + ("." if sure else ", pero dentro del margen de error de la previsión."))
-    print(f"\nPrevisión orientativa (oficial hasta {data['official_until']}). Fuentes: REE y OMIP.")
+    print(f"\nPrevisión orientativa (oficial hasta {data['official_until']}). Fuente de la previsión: Red Eléctrica.")
 
 
 if __name__ == "__main__":
