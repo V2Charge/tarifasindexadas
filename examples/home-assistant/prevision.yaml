@@ -1,0 +1,30 @@
+# Home Assistant: ¿cargar hoy o esperar? Día más barato de la próxima semana (precio oficial + previsión).
+# Añadir a configuration.yaml (o a un paquete) y reiniciar. España y Portugal (cambia tariff=2.0TD por tu tarifa).
+# Una consulta cada hora basta: la previsión se recalcula unas pocas veces al día.
+
+sensor:
+  - platform: rest
+    name: Día más barato luz
+    unique_id: dia_mas_barato_luz
+    resource: https://electricityprices.v2charge.com/v1/prices/forecast?tariff=2.0TD&days=7
+    headers:
+      X-API-Key: home-assistant-prevision
+    # Solo se guardan atributos pequeños (la respuesta completa trae todas las horas de 7 días)
+    value_template: "{{ value_json.cheapest_day.date }}"
+    json_attributes:
+      - cheapest_day
+      - official_until
+    scan_interval: 3600
+
+template:
+  - sensor:
+      - name: Precio medio día más barato
+        unique_id: precio_medio_dia_mas_barato
+        unit_of_measurement: "EUR/kWh"
+        device_class: monetary
+        state: "{{ state_attr('sensor.dia_mas_barato_luz', 'cheapest_day').compra_media | round(4) }}"
+  - binary_sensor:
+      # Encendido si hoy es el día más barato de la semana: útil para automatizar la carga del coche o la batería
+      - name: Hoy es el mejor día para cargar
+        unique_id: hoy_mejor_dia_cargar
+        state: "{{ states('sensor.dia_mas_barato_luz') == now().date() | string }}"

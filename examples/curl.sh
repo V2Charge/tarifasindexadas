@@ -16,3 +16,9 @@ curl -s "$BASE/v1/prices/cheapest?tariff=2.0TD&n=4&block=3"
 
 # Formato por fecha (medias diarias del mes, 6.1TD)
 curl -s "$BASE/mi-instalacion/indexada/2026-10/6/"
+
+# ¿Cargar hoy o esperar? Hoy y los próximos 7 días: oficial + previsión (España y Portugal)
+curl -s "$BASE/v1/prices/forecast?tariff=2.0TD&days=7"
+
+# Futuros de OMIP: próximos días, semanas, meses y trimestres (€/MWh)
+curl -s "$BASE/v1/futures?zone=ES"

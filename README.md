@@ -108,6 +108,8 @@ Respuesta de una hora:
 | GET | `/v1/periods?tariff=…&on=…` | Periodo tarifario de cada hora |
 | GET | `/v1/regulated?tariff=…` | Peajes y cargos vigentes |
 | GET | `/v1/countries` | Países disponibles, con su web y sus tarifas |
+| GET | `/v1/prices/forecast?tariff=…&days=7` | Hoy y próximos días: oficial + **previsión** (España y Portugal) |
+| GET | `/v1/futures?zone=ES` | Futuros de OMIP: días, semanas, meses, trimestres y años (€/MWh) |
 
 `tariff`: España `2.0TD`, `3.0TD` o `6.1TD` · Portugal (horas de Lisboa; precios con la Tarifa de Acesso às
 Redes, sin IVA):
@@ -284,9 +286,16 @@ Campos: `costeConsumo`, `costePeaje`, `pagoVertido`, `perdidas`, `periodo`, `fec
 | Python | [examples/python/precios.py](examples/python/precios.py) |
 | JavaScript (Node 18+ / navegador) | [examples/javascript/precios.mjs](examples/javascript/precios.mjs) |
 | Home Assistant | [examples/home-assistant/sensor.yaml](examples/home-assistant/sensor.yaml) |
+| ¿Cargar hoy o esperar? (Python) | [examples/python/cargar_hoy_o_esperar.py](examples/python/cargar_hoy_o_esperar.py) |
+| ¿Cargar hoy o esperar? (Home Assistant) | [examples/home-assistant/prevision.yaml](examples/home-assistant/prevision.yaml) |
 | Node-RED | [examples/node-red/flow.json](examples/node-red/flow.json) |
 
 ## Novedades
+
+- **28-nov-2026** · **¿Cargar hoy o esperar?** Previsión del precio hora a hora hasta 9 días en España y Portugal
+  (`/v1/prices/forecast`, con banda de error), a partir de las previsiones de demanda, eólica y solar de Red
+  Eléctrica y los futuros de OMIP; y la curva de futuros de OMIP (`/v1/futures`). En la web, sección «Próximos días»
+  con el día más barato y el mercado a plazo.
 
 - **24-nov-2026** · **Francia, Suecia y Finlandia**: precios por hora con peajes e impuestos de cada país, en la
   API y en la web (`/fr/`, `/se/`, `/fi/`, cada una en su idioma; Suecia en öre/kWh). Nuevo `GET /v1/countries`
